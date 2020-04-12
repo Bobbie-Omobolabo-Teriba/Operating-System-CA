@@ -21,6 +21,11 @@ clean:
 
 # Run the solution (FYI: we could make run dependent on link)
 run-task-1:
-  #pipe output from printf to wc using -w flag which counts the number of words
-  #use @ to suppress echoing the actual command
+  # pipe output from printf to wc using -w flag which counts the number of words
+  # use @ to suppress echoing the actual command
 	@printf "The quick brown fox jumps over the lazy dog\n" | wc -w
+
+# Run solution 2
+# Pipe the output from echo and convert to uppercase using tr UNIX tool with lower and upper flags
+run-task-2:
+	@echo "The quick brown fox jumps over the lazy dog" | tr '[:lower:]' '[:upper:]'
