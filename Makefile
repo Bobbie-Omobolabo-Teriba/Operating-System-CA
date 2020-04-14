@@ -34,3 +34,8 @@ run-task-2:
 # Download Dkit homepage HTML source code and save it as dkit.html
 run-task-3:
 	@curl https://www.dkit.ie > dkit.html 
+
+# Run solution 4
+# Retrieve first and last line of dkit.html copy to mangled.txt
+run-task-4:
+	@head -n 1 dkit.html >> mangled.txt; tail -n 1 dkit.html >> mangled.txt; sed -i 's/</[/g' mangled.txt && sed -i 's/>/]/g' mangled.txt; tac mangled.txt
