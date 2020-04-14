@@ -29,3 +29,8 @@ run-task-1:
 # Pipe the output from echo and convert to uppercase using tr UNIX tool with lower and upper flags
 run-task-2:
 	@echo "The quick brown fox jumps over the lazy dog" | tr '[:lower:]' '[:upper:]'
+
+# Run solution 3
+# Download Dkit homepage HTML source code and save it as dkit.html
+run-task-3:
+	@curl https://www.dkit.ie > dkit.html 
