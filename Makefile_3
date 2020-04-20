@@ -20,5 +20,7 @@ clean:
 	rm -rf ./build && mkdir -p build/lib
 
 # Run the solution (FYI: we could make run dependent on link)
+# Print last 10 lines of the file
 run-task-1:
+	@tail -n  10 access.log
 
