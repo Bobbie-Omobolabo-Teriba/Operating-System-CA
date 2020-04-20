@@ -21,5 +21,4 @@ clean:
 
 # Run the solution (FYI: we could make run dependent on link)
 run-task-1:
-	@./build/main `cat colours.txt`
-
+	@./build/main 'cat colours.txt'
