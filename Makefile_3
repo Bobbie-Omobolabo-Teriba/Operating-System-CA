@@ -22,5 +22,12 @@ clean:
 # Run the solution (FYI: we could make run dependent on link)
 # Print last 10 lines of the file
 run-task-1:
-	@tail -n  10 access.log
+	@tail -n 10 access.log
 
+# Run second solution in third section - Print unique IP addresses
+run-task-2:
+	@uniq access.log > text.txt
+
+#Run third
+run-task-3:
+	@cut -d ' ' -f1 access.log | sort -u | uniq
