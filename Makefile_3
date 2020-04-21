@@ -26,8 +26,8 @@ run-task-1:
 
 # Run second solution in third section - Print unique IP addresses
 run-task-2:
-	@uniq access.log > text.txt
+	@sort -u -t' ' -k1,1 access.log
 
-#Run third
+#	Run third solution in third section - print only REQUEST portion with error code
 run-task-3:
-	@cut -d ' ' -f1 access.log | sort -u | uniq
+	@cut -d ' ' -f5 access.log | sort -u
