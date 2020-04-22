@@ -20,5 +20,14 @@ clean:
 	rm -rf ./build && mkdir -p build/lib
 
 # Run the solution (FYI: we could make run dependent on link)
+# Print last 10 lines of the file
 run-task-1:
+	@tail -n 10 access.log
 
+# Run second solution in third section - Print unique IP addresses
+run-task-2:
+	@sort -u -t' ' -k1,1 access.log
+
+#	Run third solution in third section - print only REQUEST portion with error code
+run-task-3:
+	@cut -d ' ' -f5 access.log | sort -u
