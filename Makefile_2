@@ -21,6 +21,7 @@ clean:
 
 # Display the colours using cat command
 # Pipe the result in a while do loop which loops through each line in colours.txt
+# Count number of characters per line using wc command with -c flag
 # If the line has 7 or 9 characters print the line - actually 6 or 8 digits the '#' is included
 # The backticks ensures that evrything in between them is executed before the main commmand
 # Use $$ which represents the line variable
