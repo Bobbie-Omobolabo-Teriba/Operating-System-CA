@@ -19,7 +19,10 @@ build/lib/%.o: lib/%.c
 clean:
 	rm -rf ./build && mkdir -p build/lib
 
-# Run the solution (FYI: we could make run dependent on link)
+# Display the colours using cat command
+# Pipe the result in a while do loop which loops through each line in colours.txt
+# If the line has 7 or 9 characters print the line - actually 6 or 8 digits the '#' is included
+# The backticks ensures that evrything in between them is executed before the main commmand
+# Use $$ which represents the line variable
 run-task-1:
-	@./build/main `cat colours.txt`
-
+	@cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
