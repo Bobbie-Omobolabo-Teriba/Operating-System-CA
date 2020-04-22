@@ -3,6 +3,16 @@ FLAGS   = -Wall -Wextra -Wpedantic
 SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
 OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
+# Display the colours using cat command
+# Pipe the result in a while do loop which loops through each line in colours.txt
+# Count number of characters per line using wc command with -c flag
+# If the line has 7 or 9 characters print the line - actually 6 or 8 digits the '#' is included
+# The backticks ensures that evrything in between them is executed before the main commmand
+# Use $$ which represents the line variable
+define get_valid
+	@cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
+endef
+
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
 	${CC} $^ -o build/main
@@ -19,11 +29,9 @@ build/lib/%.o: lib/%.c
 clean:
 	rm -rf ./build && mkdir -p build/lib
 
-# Display the colours using cat command
-# Pipe the result in a while do loop which loops through each line in colours.txt
-# Count number of characters per line using wc command with -c flag
-# If the line has 7 or 9 characters print the line - actually 6 or 8 digits the '#' is included
-# The backticks ensures that evrything in between them is executed before the main commmand
-# Use $$ which represents the line variable
+# call the get_valid function which will display valid colours
 run-task-1:
-	@cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
+	$(call get_valid)
+
+run-task-2:
+	$(call get_valid) | while read line2; do printf $$line2 | head -c 4 | tail -c 1 && printf 1 && printf ","; done && printf "\n"
