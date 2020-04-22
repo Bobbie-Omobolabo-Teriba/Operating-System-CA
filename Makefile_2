@@ -25,8 +25,4 @@ clean:
 # The backticks ensures that evrything in between them is executed before the main commmand
 # Use $$ which represents the line variable
 run-task-1:
-<<<<<<< HEAD
-	@cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
-=======
-	@./build/main 'cat colours.txt'
->>>>>>> c83cef651fe023fd08b37c1af659586df89ad3d9
+   @cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
