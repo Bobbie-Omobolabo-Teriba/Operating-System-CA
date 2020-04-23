@@ -34,4 +34,4 @@ run-task-1:
 	$(call get_valid)
 
 run-task-2:
-	$(call get_valid) | while read line2; do printf $$line2 | head -c 4 | tail -c 1 && printf 1 && printf ","; done && printf "\n"
+	$(call get_valid) | while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf ","; done && printf "\n"
