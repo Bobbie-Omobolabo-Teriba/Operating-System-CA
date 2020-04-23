@@ -1,7 +1,8 @@
 # Rabby Bikunda & Bobbie Omobolabo Teriba OS CA2
 Unix Tools and Piping
 
-#Links to resources used
+# Links to resources used
+
 List of UNIX commands and examples
 https://www.thegeekstuff.com/2010/11/50-linux-commands/
 
