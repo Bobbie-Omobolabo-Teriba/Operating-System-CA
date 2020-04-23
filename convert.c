@@ -12,6 +12,8 @@ int main() {
 
 	//used to store strtol value
 	long n;
+
+	//read input until scanf reaches end of file
 	while (scanf("%s",hex) != EOF)
 	{
 		//strtol will convert string to long int value given a base
