@@ -2,15 +2,25 @@
 #include <string.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv) {
+#define BASE 16 //constant for base 16
+#define CHAR_LENGTH 2 //constant for number of characters
 
-	for(int i = 1; i < argc; ++i)
+int main() {
+
+	//char array for hex value
+	char hex[CHAR_LENGTH];
+
+	//used to store strtol value
+	long n;
+	while (scanf("%s",hex) != EOF)
 	{
-		if(strlen(argv[i]) == 7 || strlen(argv[i]) == 9)
-		{
-			printf("%s\n",argv[i]);
-		}
+		//strtol will convert string to long int value given a base
+		n = strtol(hex, NULL, BASE);
+		//print decimal value using %ld
+		printf("%ld,",n);
 	}
+
+	printf("\n");
 
 	return 0;
 }
