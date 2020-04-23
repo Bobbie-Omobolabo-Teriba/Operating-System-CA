@@ -15,10 +15,10 @@ endef
 
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
-	${CC} $^ -o build/main
+	${CC} $^ -o build/convert
 
 # This target compiles just main.cpp (creates an object file)
-build/main.o: main.c
+build/convert.o: convert.c
 	${CC} -c ${FLAGS} $< -o $@
 
 # This target compiles just lib/*.o (creates an object files)
@@ -37,4 +37,4 @@ run-task-1:
 #	Loop through each value and print the 4th and 5th character using the head and tail UNIX tools
 #	When loop is finished pipe the output to custom program that will convert green hex value to decimal and print the result as comma separated list
 run-task-2:
-	$(call get_valid) | while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/main
+	$(call get_valid) | while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
