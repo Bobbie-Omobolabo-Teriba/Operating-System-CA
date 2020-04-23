@@ -2,6 +2,10 @@
 Unix Tools and Piping
 
 # Links to resources used
+<<<<<<< HEAD
+=======
+
+>>>>>>> 479229bd72ca42c22fef8fd71630fb048b0c96a1
 List of UNIX commands and examples
 
 https://www.thegeekstuff.com/2010/11/50-linux-commands/
