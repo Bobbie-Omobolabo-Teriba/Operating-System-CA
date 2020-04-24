@@ -1,7 +1,5 @@
 CC      = gcc
 FLAGS   = -Wall -Wextra -Wpedantic
-SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
-OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
 # Display the colours using cat command
 # Pipe the result in a while do loop which loops through each line in colours.txt
@@ -25,17 +23,22 @@ define add_spaces
 	while read line; do echo $$line | head -c2 && printf " " && printf " "| echo $$line | head -c4 | tail -c2 && printf " " && echo $$line | head -c6 | tail -c2 && printf " " && echo $$line | head -c8 | tail -c2 && printf "\n"; done
 endef
 
+all: link link2
+
 # This target is the final compile and depends on other targets
-link: ${OBJECTS}
+link: build/convert.o
 	${CC} $^ -o build/convert
+
+link2: build/rgba.o
+	${CC} $^ -o build/rgba
 
 # This target compiles just main.cpp (creates an object file)
 build/convert.o: convert.c
-	${CC} -c ${FLAGS} $< -o $@
+	${CC} -c ${FLAGS} convert.c -o build/convert.o
 
-# This target compiles just lib/*.o (creates an object files)
-build/lib/%.o: lib/%.c
-	${CC} -c ${FLAGS} $< -o $@
+# This target compiles just main.cpp (creates an object file)
+build/rgba.o: rgba.c
+	${CC} -c ${FLAGS} rgba.c -o build/rgba.o
 
 # Remove all built files, and re-create the bin directory
 clean:
@@ -51,9 +54,6 @@ run-task-1:
 run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
-# Remove the first character and pipe the output to add spaces
-# Pipe the output and loop through each line
-# If the length of the string is 6 then append ff
-# else just print the line
 run-task-3:
-	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done
+	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba
+
