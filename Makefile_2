@@ -40,3 +40,4 @@ run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
 run-task-3:
+	@$(call get_valid) | while read line; do printf $$line | cut -c 2- ; done
