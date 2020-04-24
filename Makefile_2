@@ -3,12 +3,34 @@ FLAGS   = -Wall -Wextra -Wpedantic
 SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
 OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
+# Display the colours using cat command
+# Pipe the result in a while do loop which loops through each line in colours.txt
+# Count number of characters per line using wc command with -c flag
+# If the line has 7 or 9 characters print the line - actually 6 or 8 digits the '#' is included
+# The backticks ensures that evrything in between them is executed before the main commmand
+# Use $$ which represents the line variable
+define get_valid
+	cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
+endef
+
+# Function that removes first character from string
+#	Pipe output of valid colours, loop through each line and remove first character using cut Unix tool
+define remove_first
+	$(call get_valid) | while read line; do printf $$line | cut -c 2- ; done
+endef
+
+# Function which will add spaces between characters in string
+# Loops through each line and makes use of head and tail Unix tools
+define add_spaces
+	while read line; do echo $$line | head -c2 && printf " " && printf " "| echo $$line | head -c4 | tail -c2 && printf " " && echo $$line | head -c6 | tail -c2 && printf " " && echo $$line | head -c8 | tail -c2 && printf "\n"; done
+endef
+
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
-	${CC} $^ -o build/main
+	${CC} $^ -o build/convert
 
 # This target compiles just main.cpp (creates an object file)
-build/main.o: main.c
+build/convert.o: convert.c
 	${CC} -c ${FLAGS} $< -o $@
 
 # This target compiles just lib/*.o (creates an object files)
@@ -19,6 +41,23 @@ build/lib/%.o: lib/%.c
 clean:
 	rm -rf ./build && mkdir -p build/lib
 
-# Run the solution (FYI: we could make run dependent on link)
+# call the get_valid function which will display valid colours
 run-task-1:
+<<<<<<< HEAD
 	@./build/main 'cat colours.txt'
+=======
+	@$(call get_valid)
+
+# Pipe ouput of get_valid
+#	Loop through each value and print the 4th and 5th character using the head and tail UNIX tools
+#	When loop is finished pipe the output to custom program that will convert green hex value to decimal and print the result as comma separated list
+run-task-2:
+	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
+
+# Remove the first character and pipe the output to add spaces
+# Pipe the output and loop through each line
+# If the length of the string is 6 then append ff
+# else just print the line
+run-task-3:
+	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done
+>>>>>>> 90cb40448c239ffa859c7b20a2e7360cc3a08434
