@@ -22,8 +22,7 @@
 	//read input until scanf reaches end of file
 	while (scanf("%s %s %s %s",hex_r,hex_g,hex_b,hex_a) != EOF)
 	{
-		//strtol will convert string to long int value given a base
-		//n = strtol(hex, NULL, BASE);
+		 //strtol will convert string to long int value given a base
 		 r = strtol(hex_r, NULL, BASE);
 		 g = strtol(hex_g, NULL, BASE);
 		 b = strtol(hex_b, NULL, BASE);
