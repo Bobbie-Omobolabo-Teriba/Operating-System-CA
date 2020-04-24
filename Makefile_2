@@ -53,7 +53,7 @@ run-task-2:
 
 # Remove the first character and pipe the output to add spaces
 # Pipe the output and loop through each line
-# If the length of the string is 6 the call the add spaces function for 6 digit hex
-# If the length of the string is 8 then call the add spaces function for 8 digit hex
+# If the length of the string is 6 then append ff
+# else just print the line
 run-task-3:
-	@$(call remove_first) | $(call add_spaces)
+	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done
