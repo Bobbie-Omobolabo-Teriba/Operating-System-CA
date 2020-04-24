@@ -19,6 +19,12 @@ define remove_first
 	$(call get_valid) | while read line; do printf $$line | cut -c 2- ; done
 endef
 
+# Function which will add spaces between characters in string
+# Loops through each line and makes use of head and tail Unix tools
+define add_spaces
+	while read line; do echo $$line | head -c2 && printf " " && printf " "| echo $$line | head -c4 | tail -c2 && printf " " && echo $$line | head -c6 | tail -c2 && printf "\n"; done
+endef
+
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
 	${CC} $^ -o build/convert
@@ -45,5 +51,6 @@ run-task-1:
 run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
+# Remove the first character and pipe the output to add spaces
 run-task-3:
-	@$(call remove_first)
+	@$(call remove_first) | $(call add_spaces)
