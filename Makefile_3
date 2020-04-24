@@ -32,6 +32,6 @@ run-task-2:
 run-task-3:
 	@grep ' 404 ' access.log | cut -d '"' -f2
 
-#	Run fourth solution in third section -
+#	Run fourth solution in third section
 run-task-4:
-	@cat access.log | grep ' 404 '
+	@grep 'Windows' access.log > access.ie.log
