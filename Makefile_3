@@ -28,6 +28,10 @@ run-task-1:
 run-task-2:
 	@sort -u -t' ' -k1,1 access.log
 
-#	Run third solution in third section - print only REQUEST portion with error code
+#	Run third solution in third section - print only REQUEST portion with error code '404'
 run-task-3:
-	@cut -d ' ' -f5 access.log | sort -u
+	@grep ' 404 ' access.log | cut -d '"' -f2
+
+#	Run fourth solution in third section -
+run-task-4:
+	@cat access.log | grep ' 404 '
