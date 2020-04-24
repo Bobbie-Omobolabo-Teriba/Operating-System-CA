@@ -44,6 +44,7 @@ clean:
 # call the get_valid function which will display valid colours
 run-task-1:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@./build/main 'cat colours.txt'
 =======
 	@$(call get_valid)
@@ -61,3 +62,6 @@ run-task-2:
 run-task-3:
 	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done
 >>>>>>> 90cb40448c239ffa859c7b20a2e7360cc3a08434
+=======
+   @cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
+>>>>>>> d6035cdda609abe573cae830fb8d63ff7c9fe751
