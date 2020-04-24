@@ -10,19 +10,7 @@ OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 # The backticks ensures that evrything in between them is executed before the main commmand
 # Use $$ which represents the line variable
 define get_valid
-	@cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
-endef
-
-define get_red
-	$(call get_valid) |  while read line; do printf $$line | head -c 2 | tail -c 1 && printf $$line | head -c 3 | tail -c 1 && printf "\n"; done
-endef
-
-define get_green
-	$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done
-endef
-
-define get_blue
-	$(call get_valid) |  while read line; do printf $$line | head -c 6 | tail -c 1 && printf $$line | head -c 7 | tail -c 1 && printf "\n"; done
+	cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
 endef
 
 # This target is the final compile and depends on other targets
@@ -43,13 +31,12 @@ clean:
 
 # call the get_valid function which will display valid colours
 run-task-1:
-	$(call get_valid)
+	@$(call get_valid)
 
 # Pipe ouput of get_valid
 #	Loop through each value and print the 4th and 5th character using the head and tail UNIX tools
 #	When loop is finished pipe the output to custom program that will convert green hex value to decimal and print the result as comma separated list
 run-task-2:
-	$(call get_valid) | while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
+	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
 run-task-3:
-	$(call get_blue)
