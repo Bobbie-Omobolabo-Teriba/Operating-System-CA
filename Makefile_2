@@ -13,6 +13,12 @@ define get_valid
 	cat colours.txt | while read line; do if [ `echo -n $$line | wc -c` = 7 ] || [ `echo -n $$line | wc -c` = 9 ] ; then echo $$line ; fi ; done
 endef
 
+# Function that removes first character from string
+#	Pipe output of valid colours, loop through each line and remove first character using cut Unix tool
+define remove_first
+	$(call get_valid) | while read line; do printf $$line | cut -c 2- ; done
+endef
+
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
 	${CC} $^ -o build/convert
@@ -40,4 +46,4 @@ run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
 run-task-3:
-	@$(call get_valid) | while read line; do printf $$line | cut -c 2- ; done
+	@$(call remove_first)
