@@ -54,6 +54,9 @@ run-task-1:
 run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
 
+# Remove the first character,pipe the output and loop through strings
+# If the length of the string is 6 then append "ff" else just print the string
+# Pipe the output and add spaces between evry 2 characters
+# Pipe this and to the custom rgba programme
 run-task-3:
 	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba
-
