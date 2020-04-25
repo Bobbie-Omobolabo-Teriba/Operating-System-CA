@@ -3,6 +3,10 @@ FLAGS   = -Wall -Wextra -Wpedantic
 SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
 OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
+define filter_log
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  '/' -f2 | sort | uniq
+endef
+
 # This target is the final compile and depends on other targets
 link: ${OBJECTS}
 	${CC} $^ -o build/main
@@ -37,5 +41,4 @@ run-task-4:
 	@grep 'Windows' access.log > access.ie.log
 
 run-task-5:
-	@cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done
-
+	@$(call filter_log)
