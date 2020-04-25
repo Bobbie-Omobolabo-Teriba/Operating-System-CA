@@ -59,4 +59,4 @@ run-task-2:
 # Pipe the output and add spaces between evry 2 characters
 # Pipe this and to the custom rgba programme
 run-task-3:
-	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba
+	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba > rgba-colours.txt
