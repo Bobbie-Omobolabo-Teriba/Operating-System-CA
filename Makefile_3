@@ -37,5 +37,5 @@ run-task-4:
 	@grep 'Windows' access.log > access.ie.log
 
 run-task-5:
-	#@grep "5" access.log | cut -d ' ' -f7
-	cat access.log | cut -d ' ' -f7
+	@cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done
+
