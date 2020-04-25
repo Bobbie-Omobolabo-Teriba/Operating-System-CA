@@ -52,7 +52,7 @@ run-task-1:
 #	Loop through each value and print the 4th and 5th character using the head and tail UNIX tools
 #	When loop is finished pipe the output to custom program that will convert green hex value to decimal and print the result as comma separated list
 run-task-2:
-	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert
+	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert | rev | cut -c 2- | rev
 
 # Remove the first character,pipe the output and loop through strings
 # If the length of the string is 6 then append "ff" else just print the string
