@@ -25,7 +25,7 @@ endef
 
 # Function to get the shortest request time
 # Pipe the output of the get paths function and loop through each line
-# Sort file by the process times using sort tool with -nk7 flag
+# Sort file by the process times in asceding order using sort tool with -nk7 flag
 # Pipe the output and search for current word using grep
 # Pipe the output and get the column that has the number using cut
 # Pipe the ouput and get the first value found using the head unix tool
@@ -35,6 +35,12 @@ endef
 
 define get_longest
 	$(call get_paths)| while read line; do printf "$$line - " && sort -nk7 filtered.txt | grep $$line | cut -d ' ' -f7 | tail -1 ; done
+endef
+
+# Get average by dividing piping get paths function, looping through it, searching for current path using grep,piping the output using awk unix tool
+# NR counts the number of inputs
+define get_avg
+	$(call get_paths)| while read line; do printf "$$line - " && grep $$line filtered.txt | awk '{ SUM += $$7} END { print SUM/ NR}' ; done
 endef
 
 # This target is the final compile and depends on other targets
@@ -72,4 +78,4 @@ run-task-4:
 
 # Get the request paths, total number of requests and the longest,shortest and average process time
 run-task-5:
-	@printf "REQUEST PATHS\n" && $(call get_paths) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call count_total_requests) && printf "\nSHORTEST PROCESS TIMES\n" && $(call get_shortest) && printf "\nLONGEST PROCESS TIMES\n" && $(call get_longest)
+	@printf "REQUEST PATHS\n" && $(call get_paths) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call count_total_requests) && printf "\nSHORTEST PROCESS TIMES\n" && $(call get_shortest) && printf "\nLONGEST PROCESS TIMES\n" && $(call get_longest) && printf "\nAVG PROCESS TIMES\n" && $(call get_avg)
