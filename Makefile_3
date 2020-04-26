@@ -3,9 +3,24 @@ FLAGS   = -Wall -Wextra -Wpedantic
 SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
 OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
-# / is the delimeter
-define filter_log
+# Function that will get the unique paths
+# Use cat to display the log file, pipe the output and loop through each line
+# Go to the 7th postion in the line  using cut and the -d flag with a space as the delimiter and if the number at this position is greater than 4 then print the line.
+# When the loop is completed pipe the output go to the fourth position which is the path and remove duplicates using a combination of sort and uniq
+define get_paths
 	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  ' ' -f4 | sort | uniq
+endef
+
+# Function to get total requests and redirect to a file
+define total_requests
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  ' ' -f4 > total.txt
+endef
+
+# Function that will count the total number of requests
+# Call the total requests function and print message
+# Pipe the output of get paths function and while reading each line count occurrances of line in the text file using grep and wc tools
+define count_total_requests
+	 $(call total_requests) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call get_paths) | while read line; do grep -ow $$line total.txt | wc -l ; done
 endef
 
 # This target is the final compile and depends on other targets
@@ -42,4 +57,4 @@ run-task-4:
 	@grep 'Windows' access.log > access.ie.log
 
 run-task-5:
-	@printf "REQUEST PATH\t TOTAL NUMBER OF REQUESTS\n"  && $(call filter_log)
+	@printf "REQUEST PATH\n" && $(call get_paths) && $(call count_total_requests)
