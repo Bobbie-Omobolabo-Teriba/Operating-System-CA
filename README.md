@@ -29,3 +29,7 @@ https://www.cyberciti.biz/faq/bash-while-loop/
 Example of getting nth characters from string using head and tail
 
 https://www.unix.com/unix-for-dummies-questions-and-answers/28542-how-do-i-get-nth-character-string.html
+
+Example of using awk to get average
+
+https://stackoverflow.com/questions/19149731/use-awk-to-find-average-of-a-column

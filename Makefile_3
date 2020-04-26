@@ -1,19 +1,42 @@
-CC      = gcc
-FLAGS   = -Wall -Wextra -Wpedantic
-SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
-OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
+# Function that will get the unique paths
+# Use cat to display the log file, pipe the output and loop through each line
+# Go to the 7th postion in the line  using cut and the -d flag with a space as the delimiter and if the number at this position is greater than 4 then print the line.
+# When the loop is completed pipe the output go to the fourth position which is the path and remove duplicates using a combination of sort and uniq
+define get_paths
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  ' ' -f4 | sort | uniq
+endef
 
-# This target is the final compile and depends on other targets
-link: ${OBJECTS}
-	${CC} $^ -o build/main
+# Function to get total requests and redirect to a file
+define total_requests
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done > filtered.txt
+endef
 
-# This target compiles just main.cpp (creates an object file)
-build/main.o: main.c
-	${CC} -c ${FLAGS} $< -o $@
+# Function that will count the total number of requests
+# Call the total requests function and the get paths functio
+# Pipe the output of get paths function and while reading each line count occurrances of line in the text file using grep and wc tools
+define count_total_requests
+	 $(call total_requests) && $(call get_paths) | while read line; do printf "$$line - " && grep -ow $$line filtered.txt | wc -l ; done
+endef
 
-# This target compiles just lib/*.o (creates an object files)
-build/lib/%.o: lib/%.c
-	${CC} -c ${FLAGS} $< -o $@
+# Function to get the shortest request time
+# Pipe the output of the get paths function and loop through each line
+# Sort file by the process times in asceding order using sort tool with -nk7 flag
+# Pipe the output and search for current word using grep
+# Pipe the output and get the column that has the number using cut
+# Pipe the ouput and get the first value found using the head unix tool
+define get_shortest
+	 $(call get_paths)| while read line; do printf "$$line - " && sort -nk7 filtered.txt | grep $$line | cut -d ' ' -f7 | head -1 ; done
+endef
+
+define get_longest
+	$(call get_paths)| while read line; do printf "$$line - " && sort -nk7 filtered.txt | grep $$line | cut -d ' ' -f7 | tail -1 ; done
+endef
+
+# Get average by dividing piping get paths function, looping through it, searching for current path using grep,piping the output using awk unix tool
+# NR counts the number of inputs
+define get_avg
+	$(call get_paths)| while read line; do printf "$$line - " && grep $$line filtered.txt | awk '{ SUM += $$7} END { print SUM/ NR}' ; done
+endef
 
 # Remove all built files, and re-create the bin directory
 clean:
@@ -28,6 +51,14 @@ run-task-1:
 run-task-2:
 	@sort -u -t' ' -k1,1 access.log
 
-#	Run third solution in third section - print only REQUEST portion with error code
+#	Run third solution in third section - print only REQUEST portion with error code '404'
 run-task-3:
-	@cut -d ' ' -f5 access.log | sort -u
+	@grep ' 404 ' access.log | cut -d '"' -f2
+
+#	Run fourth solution in third section
+run-task-4:
+	@grep 'Windows' access.log > access.ie.log
+
+# Get the request paths, total number of requests and the longest,shortest and average process time
+run-task-5:
+	@printf "REQUEST PATHS\n" && $(call get_paths) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call count_total_requests) && printf "\nSHORTEST PROCESS TIMES\n" && $(call get_shortest) && printf "\nLONGEST PROCESS TIMES\n" && $(call get_longest) && printf "\nAVG PROCESS TIMES\n" && $(call get_avg)
