@@ -23,6 +23,14 @@ define add_spaces
 	while read line; do echo $$line | head -c2 && printf " " && printf " "| echo $$line | head -c4 | tail -c2 && printf " " && echo $$line | head -c6 | tail -c2 && printf " " && echo $$line | head -c8 | tail -c2 && printf "\n"; done
 endef
 
+# Remove the first character,pipe the output and loop through strings
+# If the length of the string is 6 then append "ff" else just print the string
+# Pipe the output and add spaces between evry 2 characters
+# Pipe this and to the custom rgba programme
+define create_rgba
+	 @$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba > rgba-colours.txt
+endef
+
 all: link link2
 
 # This target is the final compile and depends on other targets
@@ -54,9 +62,7 @@ run-task-1:
 run-task-2:
 	@$(call get_valid) |  while read line; do printf $$line | head -c 4 | tail -c 1 && printf $$line | head -c 5 | tail -c 1 && printf "\n"; done | ./build/convert | rev | cut -c 2- | rev
 
-# Remove the first character,pipe the output and loop through strings
-# If the length of the string is 6 then append "ff" else just print the string
-# Pipe the output and add spaces between evry 2 characters
-# Pipe this and to the custom rgba programme
+# Call rgba function and sort file using sort unix tool in ascending order by alpha value and redirect to rgba-colours.txt.
+# When sorting use -nk8 flag to get value after the eigth space and -o flag to overwrite file
 run-task-3:
-	@$(call remove_first) | while read line; do if [ `echo -n $$line | wc -c` = 6 ]; then echo $$line"ff" ; else echo $$line ; fi ; done | $(call add_spaces) | ./build/rgba > rgba-colours.txt
+	@$(call create_rgba) && sort -nk8 -o rgba-colours.txt rgba-colours.txt

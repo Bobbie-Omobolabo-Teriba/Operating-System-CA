@@ -28,7 +28,7 @@
 		 b = strtol(hex_b, NULL, BASE);
 		 a = strtol(hex_a, NULL, BASE);
 
-		 printf("rgba(%ld,%ld,%ld,%ld)\n",r,g,b,a);
+		 printf("rgba( %ld , %ld , %ld , %ld )\n",r,g,b,a);
 
 	}
 
