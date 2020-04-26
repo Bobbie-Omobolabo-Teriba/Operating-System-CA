@@ -13,14 +13,28 @@ endef
 
 # Function to get total requests and redirect to a file
 define total_requests
-	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  ' ' -f4 > total.txt
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done > filtered.txt
 endef
 
 # Function that will count the total number of requests
-# Call the total requests function and print message
+# Call the total requests function and the get paths functio
 # Pipe the output of get paths function and while reading each line count occurrances of line in the text file using grep and wc tools
 define count_total_requests
-	 $(call total_requests) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call get_paths) | while read line; do grep -ow $$line total.txt | wc -l ; done
+	 $(call total_requests) && $(call get_paths) | while read line; do printf "$$line - " && grep -ow $$line filtered.txt | wc -l ; done
+endef
+
+# Function to get the shortest request time
+# Pipe the output of the get paths function and loop through each line
+# Sort file by the process times using sort tool with -nk7 flag
+# Pipe the output and search for current word using grep
+# Pipe the output and get the column that has the number using cut
+# Pipe the ouput and get the first value found using the head unix tool
+define get_shortest
+	 $(call get_paths)| while read line; do printf "$$line - " && sort -nk7 filtered.txt | grep $$line | cut -d ' ' -f7 | head -1 ; done
+endef
+
+define get_longest
+	$(call get_paths)| while read line; do printf "$$line - " && sort -nk7 filtered.txt | grep $$line | cut -d ' ' -f7 | tail -1 ; done
 endef
 
 # This target is the final compile and depends on other targets
@@ -56,5 +70,6 @@ run-task-3:
 run-task-4:
 	@grep 'Windows' access.log > access.ie.log
 
+# Get the request paths, total number of requests and the longest,shortest and average process time
 run-task-5:
-	@printf "REQUEST PATH\n" && $(call get_paths) && $(call count_total_requests)
+	@printf "REQUEST PATHS\n" && $(call get_paths) && printf "\nTOTAL NUMBER OF REQUESTS\n" && $(call count_total_requests) && printf "\nSHORTEST PROCESS TIMES\n" && $(call get_shortest) && printf "\nLONGEST PROCESS TIMES\n" && $(call get_longest)
