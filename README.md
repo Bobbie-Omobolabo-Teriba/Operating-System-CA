@@ -33,3 +33,6 @@ https://www.unix.com/unix-for-dummies-questions-and-answers/28542-how-do-i-get-n
 Example of using awk to get average
 
 https://stackoverflow.com/questions/19149731/use-awk-to-find-average-of-a-column
+
+# Link to screencast
+https://www.youtube.com/watch?v=FAn2IqGuZ6Q&feature=youtu.be 
