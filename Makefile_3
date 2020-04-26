@@ -3,8 +3,9 @@ FLAGS   = -Wall -Wextra -Wpedantic
 SOURCES = $(wildcard *.c) $(wildcard lib/*.c)
 OBJECTS = $(patsubst %.c, build/%.o, ${SOURCES})
 
+# / is the delimeter
 define filter_log
-	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  '/' -f2 | sort | uniq
+	cat access.log | while read line; do if [ ` echo $$line | cut -d ' ' -f7` -gt 4 ] ; then echo $$line ; fi ; done | cut -d  ' ' -f4 | sort | uniq
 endef
 
 # This target is the final compile and depends on other targets
@@ -41,4 +42,4 @@ run-task-4:
 	@grep 'Windows' access.log > access.ie.log
 
 run-task-5:
-	@$(call filter_log)
+	@printf "REQUEST PATH\t TOTAL NUMBER OF REQUESTS\n"  && $(call filter_log)
